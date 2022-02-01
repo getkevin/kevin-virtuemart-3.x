@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="3.0" type="plugin" group="vmpayment" method="upgrade">
+
+    <!-- -*-*-*-*-*-*-*-*-*- -->
+    <!-- module information  -->
+    <!-- -*-*-*-*-*-*-*-*-*- -->
+    <name>VM Payment - kevin.</name>
+    <creationDate>24 November 2021</creationDate>
+    <author>kevin.</author>
+    <authorUrl>https://www.kevin.eu/</authorUrl>
+    <copyright>Copyright© 2022 kevin.</copyright>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <description>kevin. is a payment infrastructure company which offers payment initiation service in EU and EEA.</description>
+
+    <!-- -*-*-*-*-*-*-*-*-*-*-*-*- -->
+    <!-- Plugin files and folders  -->
+    <!-- -*-*-*-*-*-*-*-*-*-*-*-*- -->
+    <files>
+        <filename plugin="kevin">kevin.php</filename>
+        <filename>composer.json</filename>
+        <filename>composer.lock</filename>
+        <folder>vendor</folder>
+        <folder>language</folder>
+        <folder>tmpl</folder>
+        <folder>kevin</folder>
+    </files>
+
+    <!-- -*-*-*-*-*-*-*-*-*- -->
+    <!-- configuration page  -->
+    <!-- -*-*-*-*-*-*-*-*-*- -->
+    <vmconfig>
+        <fields name="params">
+            <fieldset name="payment" addfieldpath="/plugins/vmpayment/kevin/kevin/fields">
+
+                <!-- IMPORTANT! do not remove this element since it injects JS used for user input validation -->
+                <!-- In order to validate a new field, add it to `kevin/fields/field.js validateField function.-->
+                <field type="logo" />
+
+                <!-- client information -->
+                <!-- ================== -->
+                <field
+                    name="client_id"
+                    type="configuration"
+                    label="KEVIN_CLIENT_ID"
+                    description="KEVIN_CLIENT_ID_DESCRIPTION"
+                    required="true"
+                />
+
+                <field
+                    name="client_secret"
+                    type="configuration"
+                    label="KEVIN_CLIENT_SECRET"
+                    description="KEVIN_CLIENT_SECRET_DESCRIPTION"
+                    required="true"
+                    password="true"
+                />
+
+                <field
+                    name="endpoint_secret"
+                    type="configuration"
+                    label="KEVIN_ENDPOINT_SECRET"
+                    description="KEVIN_ENDPOINT_SECRET_DESCRIPTION"
+                    required="true"
+                    password="true"
+                />
+
+                <field
+                    name="company_name"
+                    type="configuration"
+                    label="KEVIN_COMPANY_NAME"
+                    description="KEVIN_COMPANY_NAME_DESCRIPTION"
+                    required="true"
+                />
+
+                <field
+                    name="company_bank_account"
+                    type="configuration"
+                    label="KEVIN_COMPANY_BANK_ACCOUNT"
+                    description="KEVIN_COMPANY_BANK_ACCOUNT_DESCRIPTION"
+                    required="true"
+                />
+
+                <field
+                    name="redirect_preferred"
+                    type="radio"
+                    default="0"
+                    label="KEVIN_REDIRECT_PREFERRED"
+                    description="KEVIN_REDIRECT_PREFERRED_DESCRIPTION"
+                    required="true"
+                >
+                    <option value="1">KEVIN_YES</option>
+                    <option value="0">KEVIN_NO</option>
+                </field>
+
+                <field
+                    name="list_banks_in_checkout"
+                    type="radio"
+                    default="1"
+                    label="KEVIN_LIST_BANKS_IN_CHECKOUT"
+                    description="KEVIN_LIST_BANKS_IN_CHECKOUT_DESCRIPTION"
+                    required="true"
+                >
+                    <option value="1">KEVIN_YES</option>
+                    <option value="0">KEVIN_NO</option>
+                </field>
+            </fieldset>
+        </fields>
+    </vmconfig>
+</extension>

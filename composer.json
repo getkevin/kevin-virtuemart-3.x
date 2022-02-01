@@ -1,0 +1,9 @@
+{
+    "require": {
+        "getkevin/kevin-php": "^0.14.5"
+    },
+
+    "autoload": {
+        "psr-4": {"Kevin\\VirtueMart\\": "kevin/"}
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "packages": [
+        {
+            "name": "getkevin/kevin-php",
+            "version": "0.14.5",
+            "version_normalized": "0.14.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getkevin/kevin-php.git",
+                "reference": "66449e50bf1ee3399748e08a0c514085649ae66b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getkevin/kevin-php/zipball/66449e50bf1ee3399748e08a0c514085649ae66b",
+                "reference": "66449e50bf1ee3399748e08a0c514085649ae66b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6"
+            },
+            "time": "2021-11-16T17:37:28+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Kevin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "kevin.",
+                    "email": "help@kevin.eu"
+                }
+            ],
+            "description": "PHP client for kevin. platform.",
+            "support": {
+                "email": "help@kevin.eu",
+                "issues": "https://github.com/getkevin/kevin-php/issues",
+                "source": "https://github.com/getkevin/kevin-php/tree/0.14.5"
+            },
+            "install-path": "../getkevin/kevin-php"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
