@@ -8,8 +8,7 @@ kevin. payment initiation plugin.
 - VirtueMart 3
 
 ## Installation
-
-To be updated
+Installation instructions can be found in <a href="https://docs.kevin.eu/public/platform/v0.3#section/Plugins/VirtueMart" target="_blank">the official kevin. documentation</a>.
 
 ## Support
 
