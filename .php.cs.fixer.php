@@ -10,5 +10,6 @@ return $config->setRules(
     [
         '@PSR12' => true,
         '@Symfony' => true,
+        'visibility_required' => false,
     ]
 )->setFinder($finder);
