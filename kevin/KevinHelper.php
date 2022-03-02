@@ -34,7 +34,7 @@ trait KevinHelper
 
         $activePaymentMethodsCount = $db->setQuery($q)->loadResult();
 
-        return (int)$activePaymentMethodsCount === 1;
+        return 1 === (int) $activePaymentMethodsCount;
     }
 
     /**
@@ -69,7 +69,7 @@ trait KevinHelper
     /**
      * Get country names from the database by matching given 2-letter country codes.
      *
-     * @var string[] $countryCodes
+     * @var string[]
      *
      * @return string[]
      *
@@ -84,7 +84,7 @@ trait KevinHelper
         }
 
         $where = "WHERE `country_2_code` = '$countryCodes[0]'";
-        for ($i = 1; $i < count($countryCodes); $i++) {
+        for ($i = 1; $i < count($countryCodes); ++$i) {
             $where .= " OR `country_2_code` = '$countryCodes[$i]'";
         }
 
@@ -105,7 +105,7 @@ trait KevinHelper
     }
 
     /**
-     * Get kevin. data user session
+     * Get kevin. data user session.
      *
      * @return ?stdClass stdClass(selectedCountryCode, selectedBankId)
      *
@@ -119,9 +119,9 @@ trait KevinHelper
     }
 
     /**
-     * Set kevin. data user session
+     * Set kevin. data user session.
      *
-     * @var stdClass $kevinSession
+     * @var stdClass
      *
      * @return void
      *
@@ -134,7 +134,7 @@ trait KevinHelper
     }
 
     /**
-     * Unset kevin. session data to prevent http code 400 after placing an order
+     * Unset kevin. session data to prevent http code 400 after placing an order.
      *
      * @since version 1.0.0
      */
@@ -148,7 +148,7 @@ trait KevinHelper
      * Sanitize string to prevent user input errors or inconsistencies for API use.
      *
      * @param string $text
-     * @param bool $removeAllSpaces
+     * @param bool   $removeAllSpaces
      *
      * @return string
      *
@@ -168,15 +168,13 @@ trait KevinHelper
     /**
      * Generate consistent exception message.
      *
-     * @param Exception $e
-     *
      * @return string
      *
      * @since 1.0.0
      */
     public function generateExceptionMessage(Exception $e)
     {
-        return get_class($e) . ': ' . $e->getMessage();
+        return get_class($e).': '.$e->getMessage();
     }
 
     /**
@@ -190,6 +188,7 @@ trait KevinHelper
     {
         jimport('joomla.version');
         $version = new JVersion();
+
         return $version->RELEASE;
     }
 
@@ -208,7 +207,7 @@ trait KevinHelper
     /**
      * Get kevin payment status by VirtueMart order id.
      *
-     * @param int $orderId
+     * @param int    $orderId
      * @param string $tableName
      *
      * @return string
@@ -232,9 +231,9 @@ trait KevinHelper
     /**
      * Update kevin. order status by order id.
      *
-     * @param int $orderId
+     * @param int    $orderId
      * @param string $tableName
-     * @param string $status - either 'completed' or 'failed'
+     * @param string $status    - either 'completed' or 'failed'
      *
      * @return void
      *
@@ -253,7 +252,7 @@ trait KevinHelper
     }
 
     /**
-     * Validate user input
+     * Validate user input.
      *
      * @return ?bool false on failed | true on success | null on exception
      *
@@ -273,10 +272,11 @@ trait KevinHelper
             $mainframe = JFactory::getApplication();
         } catch (Exception $e) {
             echo $this->generateExceptionMessage($e);
+
             return null;
         }
 
-        $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
+        $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', false));
 
         return false;
     }
@@ -291,9 +291,9 @@ trait KevinHelper
     public function getClientOptions()
     {
         return [
-            'version'               => '0.3',
-            'pluginVersion'         => self::VERSION,
-            'pluginPlatform'        => "Joomla/VirtueMart",
+            'version' => '0.3',
+            'pluginVersion' => self::VERSION,
+            'pluginPlatform' => 'Joomla/VirtueMart',
             'pluginPlatformVersion' => "Joomla! v{$this->getJoomlaVersion()} VirtueMart v{$this->getVirtuemartVersion()}",
         ];
     }
@@ -317,7 +317,7 @@ trait KevinHelper
             'html',
             $this->renderByLayout('post_payment',
                 [
-                    'message'    => $this->generateAlertHtml($this->generateExceptionMessage($e), self::ALERT_ERROR),
+                    'message' => $this->generateAlertHtml($this->generateExceptionMessage($e), self::ALERT_ERROR),
                     'buttonText' => vmText::_('KEVIN_BUTTON_TEXT_RETRY'),
                     'buttonLink' => sprintf('%sindex.php?option=com_virtuemart&view=cart', JURI::root()),
                 ]

@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 use Joomla\CMS\Factory;
 use Kevin\Client;
@@ -13,9 +13,6 @@ use Kevin\VirtueMart\vmPSPluginBase;
  * kevin. payment initiation gateway for VirtueMart 3.
  *
  * @see https://www.kevin.eu/
- *
- * @package    VirtueMart
- * @subpackage payment
  *
  * @copyright  Copyright© 2022 kevin.
  * @license    GPL2
@@ -30,13 +27,13 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      * pglVmPaymentKevin constructor.
      *
      * @param JEventDispatcher &$subject
-     * @param string[] $config
+     * @param string[]         $config
      *
      * @return void
      *
      * @since 1.0.0
      */
-    function __construct(&$subject, $config)
+    public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
 
@@ -54,8 +51,8 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      * VM calls this function to format HTML for given plugin to be shown in the payment methods list for customer.
      *
      * @param VirtueMartCart $cart
-     * @param string $selected - currently selected VMPayment plugin id
-     * @param array &$htmlIn
+     * @param string         $selected - currently selected VMPayment plugin id
+     * @param array          &$htmlIn
      *
      * @return bool
      *
@@ -68,8 +65,9 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
 
         $paymentMethod = $this->getVmPluginMethod($paymentMethodId);
 
-        if (!$isSelected || !(bool)$paymentMethod->list_banks_in_checkout) {
+        if (!$isSelected || !(bool) $paymentMethod->list_banks_in_checkout) {
             $this->unsetKevinSession(); //reset session to prevent issues when the setting is flicked
+
             return $this->displayListFE($cart, $selected, $htmlIn);
         }
 
@@ -98,13 +96,13 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      * initiating kevin. payment.
      *
      * @param VirtueMartCart $cart
-     * @param array $order
+     * @param array          $order
      *
      * @return bool|void|null - documented return value is string|void|null but actual return value is bool|void|null
      *
      * @since 1.0.0
      */
-    function plgVmConfirmedOrder($cart, $order)
+    public function plgVmConfirmedOrder($cart, $order)
     {
         $paymentMethodId = $order['details']['BT']->virtuemart_paymentmethod_id;
 
@@ -118,9 +116,9 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $clientSecret = $this->sanitize($paymentMethod->client_secret);
         $creditorName = $this->sanitize($paymentMethod->company_name, false);
         $creditorIban = $this->sanitize($paymentMethod->company_bank_account);
-        $isRedirectPreferred = (bool)$paymentMethod->redirect_preferred;
-        $isListBanksInCheckout = (bool)$paymentMethod->list_banks_in_checkout;
-        $isCardPayment = $this->getKevinSession()->selectedBankId === 'card';
+        $isRedirectPreferred = (bool) $paymentMethod->redirect_preferred;
+        $isListBanksInCheckout = (bool) $paymentMethod->list_banks_in_checkout;
+        $isCardPayment = 'card' === $this->getKevinSession()->selectedBankId;
         $bankId = $this->getKevinSession()->selectedBankId;
 
         if ($isListBanksInCheckout && !$this->validateUserInput()) {
@@ -134,28 +132,28 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
 
         $orderData = $order['details']['BT'];
 
-        $pluginUrlRoot = JURI::root() . 'index.php?option=com_virtuemart&view=vmplg';
+        $pluginUrlRoot = JURI::root().'index.php?option=com_virtuemart&view=vmplg';
 
-        $redirectUrl = sprintf($pluginUrlRoot . '&task=pluginresponsereceived&on=%s&op=%s&pm=%s',
+        $redirectUrl = sprintf($pluginUrlRoot.'&task=pluginresponsereceived&on=%s&op=%s&pm=%s',
             $orderData->order_number,
             $orderData->order_pass,
             $orderData->virtuemart_paymentmethod_id
         );
 
-        $webhookUrl  = sprintf($pluginUrlRoot . '&task=pluginNotification&on=%s&op=%s&pm=%s',
+        $webhookUrl = sprintf($pluginUrlRoot.'&task=pluginNotification&on=%s&op=%s&pm=%s',
             $orderData->order_number,
             $orderData->order_pass,
             $orderData->virtuemart_paymentmethod_id
         );
 
         $attr = [
-            'amount'            => $orderData->order_total,
-            'currencyCode'      => $currencyCode,
-            'description'       => $orderData->virtuemart_order_id,
-            'identifier'        => ['email' => $orderData->email],
+            'amount' => $orderData->order_total,
+            'currencyCode' => $currencyCode,
+            'description' => $orderData->virtuemart_order_id,
+            'identifier' => ['email' => $orderData->email],
             'redirectPreferred' => $isRedirectPreferred,
-            'Redirect-URL'      => $redirectUrl,
-            'Webhook-URL'       => $webhookUrl,
+            'Redirect-URL' => $redirectUrl,
+            'Webhook-URL' => $webhookUrl,
         ];
 
         try {
@@ -163,14 +161,15 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
             $projectSettings = $client->auth()->getProjectSettings();
         } catch (KevinException $e) {
             $this->handleConfirmedOrderException($e);
+
             return null;
         }
 
         if (in_array('bank', $projectSettings['paymentMethods'])
         ) {
             $attr['bankPaymentMethod'] = [
-                'creditorName'    => $creditorName,
-                'endToEndId'      => $orderData->order_number,
+                'creditorName' => $creditorName,
+                'endToEndId' => $orderData->order_number,
                 'creditorAccount' => [
                     'iban' => $creditorIban,
                 ],
@@ -193,15 +192,16 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
             $response = $client->payment()->initPayment($attr);
         } catch (KevinException $e) {
             $this->handleConfirmedOrderException($e);
+
             return null;
         }
 
         $databaseValuesToWrite = [
             'virtuemart_order_id' => $orderData->virtuemart_order_id,
             'payment_order_total' => $orderData->order_total,
-            'payment_currency'    => $currencyCode,
-            'payment_name'        => $paymentMethod->payment_name,
-            'bank_id'             => $bankId,
+            'payment_currency' => $currencyCode,
+            'payment_name' => $paymentMethod->payment_name,
+            'bank_id' => $bankId,
         ];
 
         $this->storePSPluginInternalData($databaseValuesToWrite);
@@ -213,7 +213,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      * This function is fired when client is redirected from kevin. back to the store.
      * It handles payment status cases and acts accordingly.
      *
-     * @param string &$html - pointer to thank you page body html
+     * @param string &$html      - pointer to thank you page body html
      * @param string &$pageTitle - pointer to thank you page title
      *
      * @throws KevinException
@@ -223,7 +223,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      *
      * @since 1.0.0
      */
-    function plgVmOnPaymentResponseReceived(&$html, &$pageTitle)
+    public function plgVmOnPaymentResponseReceived(&$html, &$pageTitle)
     {
         $request = Factory::getApplication()->input;
 
@@ -257,7 +257,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
 
                 $html = $this->renderByLayout('post_payment',
                     [
-                        'message'    => vmText::_('KEVIN_MESSAGE_SUCCESS'),
+                        'message' => vmText::_('KEVIN_MESSAGE_SUCCESS'),
                         'buttonText' => vmText::_('KEVIN_BUTTON_TEXT_CONTINUE'),
                         'buttonLink' => JURI::root(),
                     ]
@@ -274,7 +274,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
 
                 $html = $this->renderByLayout('post_payment',
                     [
-                        'message'    => vmText::_('KEVIN_MESSAGE_SUCCESS'),
+                        'message' => vmText::_('KEVIN_MESSAGE_SUCCESS'),
                         'buttonText' => vmText::_('KEVIN_BUTTON_TEXT_CONTINUE'),
                         'buttonLink' => JURI::root(),
                     ]
@@ -347,7 +347,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
      *
      * @since version 1.0.0
      */
-    function plgVmOnPaymentNotification()
+    public function plgVmOnPaymentNotification()
     {
         $request = Factory::getApplication()->input;
 
@@ -369,7 +369,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         if ($selectedCountryCode || $selectedBankId) {
             $this->setKevinSession($kevinSession);
             http_response_code(200);
-            die;
+            exit;
         }
 
         $paymentMethodId = $request->getString('pm', 0);
@@ -388,7 +388,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $paymentMethod = $this->getVmPluginMethod($paymentMethodId);
         $endpointSecret = $this->sanitize($paymentMethod->endpoint_secret);
 
-        $webhookUrl  = sprintf(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginNotification&on=%s&op=%s&pm=%s',
+        $webhookUrl = sprintf(JURI::root().'index.php?option=com_virtuemart&view=vmplg&task=pluginNotification&on=%s&op=%s&pm=%s',
             $orderNumber,
             $orderPass,
             $paymentMethodId
@@ -417,8 +417,9 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $order = $orderModel->getOrder($orderId);
 
         // prevent successful order from being changed to failed by an expired payment
-        if ($order['details']['BT']->order_status === 'C') {
+        if ('C' === $order['details']['BT']->order_status) {
             http_response_code(200);
+
             return;
         }
 
@@ -432,7 +433,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
 
         $order = [
             'virtuemart_order_id' => $orderId,
-            'comments' => sprintf('[kevin. webhook] Payment id: %s', $requestBody['id'])
+            'comments' => sprintf('[kevin. webhook] Payment id: %s', $requestBody['id']),
         ];
 
         if ($kevinPayment['bankPaymentMethod']['bankId']) {
@@ -478,7 +479,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $cart = VirtueMartCart::getCart();
 
         // if kevin. is not the only active payment, render default name w/o custom HTML
-        if (!$plugin->list_banks_in_checkout||!$this->isKevinTheOnlyPayment()) {
+        if (!$plugin->list_banks_in_checkout || !$this->isKevinTheOnlyPayment()) {
             return parent::renderPluginName($plugin);
         }
 
@@ -493,12 +494,12 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
     }
 
     /**
-     * Render bank list displayed in checkout page
+     * Render bank list displayed in checkout page.
      *
      * @param VirtueMartModelPaymentmethod|TablePaymentmethods $paymentMethod
-     * @param ?string $selectedCountryCode - Alpha-2 code
-     * @param ?string $selectedBankId
-     * @param ?string $addressCountryId
+     * @param ?string                                          $selectedCountryCode - Alpha-2 code
+     * @param ?string                                          $selectedBankId
+     * @param ?string                                          $addressCountryId
      *
      * @return string|null
      *
@@ -509,8 +510,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $selectedCountryCode = '',
         $selectedBankId = '',
         $addressCountryId = ''
-    )
-    {
+    ) {
         $clientId = $this->sanitize($paymentMethod->client_id);
         $clientSecret = $this->sanitize($paymentMethod->client_secret);
 
@@ -533,10 +533,10 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         return $this->renderByLayout('bank_list',
             [
                 'selectedCountryCode' => $selectedCountryCode,
-                'selectedBankId'      => $selectedBankId,
-                'countries'           => $this->getCountryNamesBy2Codes($supportedCountryCodes['data']),
-                'banks'               => $banks,
-                'isCardEnabled'       => in_array('card', $projectSettings['paymentMethods']),
+                'selectedBankId' => $selectedBankId,
+                'countries' => $this->getCountryNamesBy2Codes($supportedCountryCodes['data']),
+                'banks' => $banks,
+                'isCardEnabled' => in_array('card', $projectSettings['paymentMethods']),
             ]
         );
     }
@@ -553,19 +553,19 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
     public function getVarsToPush()
     {
         return [
-            'module_name'            => [vmText::_('KEVIN_PAYMENT_NAME'), 'char'],
-            'client_id'              => ['', 'char'],
-            'client_secret'          => ['', 'char'],
-            'endpoint_secret'        => ['', 'char'],
-            'company_name'           => ['', 'char'],
-            'company_bank_account'   => ['', 'char'],
-            'redirect_preferred'     => ['', 'tinyint'],
+            'module_name' => [vmText::_('KEVIN_PAYMENT_NAME'), 'char'],
+            'client_id' => ['', 'char'],
+            'client_secret' => ['', 'char'],
+            'endpoint_secret' => ['', 'char'],
+            'company_name' => ['', 'char'],
+            'company_bank_account' => ['', 'char'],
+            'redirect_preferred' => ['', 'tinyint'],
             'list_banks_in_checkout' => ['', 'tinyint'],
         ];
     }
 
     /**
-     * Get fields which will be used to store order data and persisted to plugin's database table
+     * Get fields which will be used to store order data and persisted to plugin's database table.
      *
      * 'field_name' => 'SQL_DATA_TYPE() SQL RULES'
      *
@@ -576,13 +576,13 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
     public function getTableSQLFields()
     {
         return [
-            'id'                  => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'id' => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
             'virtuemart_order_id' => 'INT(1) UNSIGNED NOT NULL',  //same as virtuemart_orders table
             'payment_order_total' => 'DECIMAL(15,5) NOT NULL',
-            'payment_currency'    => 'VARCHAR(3) NOT NULL',
-            'kevin_status'        => 'VARCHAR(15)',
-            'bank_id'             => 'VARCHAR(50)',
-            'payment_name'        => 'VARCHAR(50)',
+            'payment_currency' => 'VARCHAR(3) NOT NULL',
+            'kevin_status' => 'VARCHAR(15)',
+            'bank_id' => 'VARCHAR(50)',
+            'payment_name' => 'VARCHAR(50)',
         ];
     }
 }

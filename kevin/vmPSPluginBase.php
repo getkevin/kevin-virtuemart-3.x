@@ -7,13 +7,13 @@ use TablePaymentmethods;
 use VirtueMartCart;
 use vmPSPlugin;
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or exit('Restricted access');
 if (!class_exists('vmPSPlugin')) {
-    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+    require JPATH_VM_PLUGINS.DS.'vmpsplugin.php';
 }
 
 /**
- * VirtueMart payment plugin boilerplate functions
+ * VirtueMart payment plugin boilerplate functions.
  *
  * @since version 1.0.0
  */
@@ -22,7 +22,7 @@ class vmPSPluginBase extends vmPSPlugin
     protected $tableFields;
 
     /**
-     * This function is used for fetching payment name e.g. when generating invoices
+     * This function is used for fetching payment name e.g. when generating invoices.
      *
      * @param string $virtuemart_order_id
      * @param string $virtuemart_paymentmethod_id
@@ -30,7 +30,8 @@ class vmPSPluginBase extends vmPSPlugin
      *
      * @since version 1.0.0
      */
-    public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
+    public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name)
+    {
         $this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
     }
 
@@ -41,7 +42,7 @@ class vmPSPluginBase extends vmPSPlugin
      *
      * @since 1.0.0
      */
-    function plgVmOnStoreInstallPaymentPluginTable($pluginId)
+    public function plgVmOnStoreInstallPaymentPluginTable($pluginId)
     {
         return $this->onStoreInstallPluginTable($pluginId);
     }
@@ -55,7 +56,7 @@ class vmPSPluginBase extends vmPSPlugin
      *
      * @since 1.0.0
      */
-    function plgVmDeclarePluginParamsPaymentVM3(&$data)
+    public function plgVmDeclarePluginParamsPaymentVM3(&$data)
     {
         return $this->declarePluginParams('payment', $data);
     }
@@ -63,15 +64,15 @@ class vmPSPluginBase extends vmPSPlugin
     /**
      * Save plugin parameters submitted from configuration page in admin panel.
      *
-     * @param string $name
-     * @param string $id
+     * @param string              $name
+     * @param string              $id
      * @param TablePaymentmethods &$table
      *
      * @return bool - true on success and false on failure
      *
      * @since 1.0.0
      */
-    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table)
+    public function plgVmSetOnTablePluginParamsPayment($name, $id, &$table)
     {
         return $this->setOnTablePluginParams($name, $id, $table);
     }
@@ -80,14 +81,14 @@ class vmPSPluginBase extends vmPSPlugin
      * VM calls this function to check whether the payment method can be used in given situation.
      *
      * @param VirtueMartCart $cart
-     * @param stdClass $method
-     * @param array $cart_prices
+     * @param stdClass       $method
+     * @param array          $cart_prices
      *
      * @return bool
      *
      * @since 1.0.0
      */
-    function checkConditions($cart, $method, $cart_prices)
+    public function checkConditions($cart, $method, $cart_prices)
     {
         return true;
     }
@@ -96,7 +97,7 @@ class vmPSPluginBase extends vmPSPlugin
      * Validate whether selected payment is valid for current use case.
      *
      * @param VirtueMartCart $cart
-     * @param string &$msg
+     * @param string         &$msg
      *
      * @return bool|null
      *
@@ -111,8 +112,8 @@ class vmPSPluginBase extends vmPSPlugin
      * If there are any price modifications required for payment method, they should be done here.
      *
      * @param VirtueMartCart $cart
-     * @param array $cart_prices
-     * @param string $cart_prices_name
+     * @param array          $cart_prices
+     * @param string         $cart_prices_name
      *
      * @return bool|null
      *
@@ -133,7 +134,7 @@ class vmPSPluginBase extends vmPSPlugin
      *
      * @since version 1.0.0
      */
-    function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$payment_currency_id)
+    public function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$payment_currency_id)
     {
         if (!$this->isCurrentPaymentSelected($virtuemart_paymentmethod_id)) {
             return null;
@@ -150,14 +151,14 @@ class vmPSPluginBase extends vmPSPlugin
      * Checks how many payment methods are available. If there's only one, there will not be payment selection section.
      *
      * @param VirtueMartCart $cart
-     * @param array $cart_prices
-     * @param int &$paymentCounter
+     * @param array          $cart_prices
+     * @param int            &$paymentCounter
      *
      * @return string|null - documented return type is ?int but actual return type is ?string
      *
      * @since 1.0.0
      */
-    function plgVmOnCheckAutomaticSelectedPayment($cart, $cart_prices = [], &$paymentCounter)
+    public function plgVmOnCheckAutomaticSelectedPayment($cart, $cart_prices = [], &$paymentCounter)
     {
         return $this->onCheckAutomaticSelected($cart, $cart_prices);
     }

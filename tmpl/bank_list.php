@@ -50,21 +50,20 @@
 
 
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or exit();
 
 /**
- * Bank selection list in checkout template
+ * Bank selection list in checkout template.
  *
  * @var array $viewData - template parameter array passed to layout renderer
  *
  * @since 1.0.0
  */
-
 $headline = vmText::_('KEVIN_BANK_SELECT_HEADER');
 $selectCountry = vmText::_('KEVIN_SELECT_COUNTRY');
 
 // if selected country code is not on the list, do not select any country
-$selectDefault = !(bool)$viewData['countries'][$viewData['selectedCountryCode']] ? 'selected' : '';
+$selectDefault = !(bool) $viewData['countries'][$viewData['selectedCountryCode']] ? 'selected' : '';
 
 $html = "<div class='headline'>";
 $html .= "<h5>$headline</h5>";
@@ -75,8 +74,8 @@ foreach ($viewData['countries'] as $countryCode => $countryName) {
 
     $html .= "<option value='$countryCode' $selected>$countryName</option>";
 }
-$html .= "</select>";
-$html .= "</div>";
+$html .= '</select>';
+$html .= '</div>';
 $html .= "<button data-dynamic-update='1' id='refresh-bank-list' hidden></button>";
 
 $html .= "<div class='bank-list-container'>";
@@ -85,22 +84,22 @@ foreach ($viewData['banks'] as $bank) {
 
     $html .= "<input type='radio' name='bank' id='{$bank['id']}' class='input-hidden' value='{$bank['id']}' $checked onclick='updateBankId(this)'/>";
     $html .= "<label for='{$bank['id']}' class='bank-list-item'>";
-    $html .=    "<img  class='bank-logo' src='{$bank['imageUri']}' alt='{$bank['id']}' />";
-    $html .= "</label>";
+    $html .= "<img  class='bank-logo' src='{$bank['imageUri']}' alt='{$bank['id']}' />";
+    $html .= '</label>';
 }
 
 if ($viewData['banks'] && $viewData['isCardEnabled']) {
-    $checked = $viewData['selectedBankId'] === 'card' ? "checked='checked'" : '';
+    $checked = 'card' === $viewData['selectedBankId'] ? "checked='checked'" : '';
 
-    $cardImageUri = dirname(__FILE__) . '/../kevin/images/credit_card_stock.png';
-    $image = 'data:image/png;base64,' . base64_encode(file_get_contents($cardImageUri));
+    $cardImageUri = dirname(__FILE__).'/../kevin/images/credit_card_stock.png';
+    $image = 'data:image/png;base64,'.base64_encode(file_get_contents($cardImageUri));
 
     $html .= "<input type='radio' name='bank' id='card' class='input-hidden' value='card' $checked onclick='updateBankId(this)'/>";
     $html .= "<label for='card' class='bank-list-item'>";
-    $html .=    "<img  class='bank-logo' src='$image' alt='card' />";
-    $html .= "</label>";
+    $html .= "<img  class='bank-logo' src='$image' alt='card' />";
+    $html .= '</label>';
 }
-$html .= "</div>";
+$html .= '</div>';
 
 echo $html;
 ?>
