@@ -9,7 +9,7 @@ namespace Kevin\VirtueMart;
  */
 interface KevinInterface
 {
-    const VERSION = '1.0.0'; //kevin. VirtueMart plugin version
+    const VERSION = '1.1.0'; //kevin. VirtueMart plugin version
 
     const KEVIN_PAYMENT_STATUS_STARTED = 'started';
     const KEVIN_PAYMENT_STATUS_PENDING = 'pending';

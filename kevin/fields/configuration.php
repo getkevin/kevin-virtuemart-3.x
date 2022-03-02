@@ -1,6 +1,6 @@
 <?php
 
-defined('JPATH_BASE') or die();
+defined('JPATH_BASE') or exit();
 
 jimport('joomla.form.formfield');
 class JFormFieldConfiguration extends JFormField
