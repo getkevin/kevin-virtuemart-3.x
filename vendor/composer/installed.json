@@ -46,6 +46,6 @@
             "install-path": "../getkevin/kevin-php"
         }
     ],
-    "dev": true,
+    "dev": false,
     "dev-package-names": []
 }
