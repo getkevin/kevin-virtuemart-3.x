@@ -577,7 +577,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
     {
         return [
             'id' => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
-            'virtuemart_order_id' => 'INT(1) UNSIGNED NOT NULL',  //same as virtuemart_orders table
+            'virtuemart_order_id' => 'INT(1) UNSIGNED NOT NULL',  // same as virtuemart_orders table
             'payment_order_total' => 'DECIMAL(15,5) NOT NULL',
             'payment_currency' => 'VARCHAR(3) NOT NULL',
             'kevin_status' => 'VARCHAR(15)',
