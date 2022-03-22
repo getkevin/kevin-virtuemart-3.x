@@ -1,6 +1,8 @@
 <?php
 
-defined('JPATH_BASE') or exit();
+if (!defined('JPATH_BASE')) {
+    exit();
+}
 
 jimport('joomla.form.formfield');
 class JFormFieldLogo extends JFormField

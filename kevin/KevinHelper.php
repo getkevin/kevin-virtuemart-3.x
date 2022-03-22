@@ -51,16 +51,16 @@ trait KevinHelper
     {
         switch ($type) {
             case self::ALERT_SUCCESS:
-                $color = '#23C552'; //green
+                $color = '#23C552'; // green
                 break;
             case self::ALERT_ERROR:
-                $color = '#F84F31'; //red
+                $color = '#F84F31'; // red
                 break;
             case self::ALERT_INFO:
-                $color = '#FAAD15'; //orange
+                $color = '#FAAD15'; // orange
                 break;
             default:
-                $color = '#9A9A9A'; //grey
+                $color = '#9A9A9A'; // grey
         }
 
         return "<h4 style='padding: 10px; background-color: $color; color: white; margin-bottom: 15px;'>$message</h4>";
@@ -79,12 +79,12 @@ trait KevinHelper
     {
         $db = JFactory::getDBO();
 
-        if (!count($countryCodes)) {
+        if (!\count($countryCodes)) {
             return [];
         }
 
         $where = "WHERE `country_2_code` = '$countryCodes[0]'";
-        for ($i = 1; $i < count($countryCodes); ++$i) {
+        for ($i = 1; $i < \count($countryCodes); ++$i) {
             $where .= " OR `country_2_code` = '$countryCodes[$i]'";
         }
 
@@ -174,7 +174,7 @@ trait KevinHelper
      */
     public function generateExceptionMessage(Exception $e)
     {
-        return get_class($e).': '.$e->getMessage();
+        return \get_class($e).': '.$e->getMessage();
     }
 
     /**

@@ -5,13 +5,14 @@
         }
     },
     "require": {
-        "getkevin/kevin-php": "^0.14.5"
+        "getkevin/kevin-php": "0.14.5"
     },
     "autoload": {
         "psr-4": {"Kevin\\VirtueMart\\": "kevin/"}
     },
     "scripts": {
-        "fix-style": "vendor/bin/php-cs-fixer fix --config ./.php.cs.fixer.php",
+        "fix-style": "vendor/bin/php-cs-fixer fix --config ./.php.cs.fixer.php --allow-risky=yes",
+        "check-style": "vendor/bin/php-cs-fixer fix --config ./.php.cs.fixer.php --allow-risky=yes --dry-run --verbose",
         "make-zip": "composer install --no-dev && composer archive --format=zip --file=kevin-virtuemart && composer install"
     },
     "archive": {

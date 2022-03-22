@@ -66,7 +66,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $paymentMethod = $this->getVmPluginMethod($paymentMethodId);
 
         if (!$isSelected || !(bool) $paymentMethod->list_banks_in_checkout) {
-            $this->unsetKevinSession(); //reset session to prevent issues when the setting is flicked
+            $this->unsetKevinSession(); // reset session to prevent issues when the setting is flicked
 
             return $this->displayListFE($cart, $selected, $htmlIn);
         }
@@ -236,7 +236,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $status = $request->getString('statusGroup', 0);
 
         $virtueMartOrderModel = new VirtueMartModelOrders();
-        $orderId = intval($virtueMartOrderModel->getOrderIdByOrderPass($orderNumber, $orderPass));
+        $orderId = (int) ($virtueMartOrderModel->getOrderIdByOrderPass($orderNumber, $orderPass));
 
         $kevinPaymentStatus = $this->getKevinPaymentStatus($orderId, $this->_tablename);
 
@@ -577,7 +577,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
     {
         return [
             'id' => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
-            'virtuemart_order_id' => 'INT(1) UNSIGNED NOT NULL',  //same as virtuemart_orders table
+            'virtuemart_order_id' => 'INT(1) UNSIGNED NOT NULL',  // same as virtuemart_orders table
             'payment_order_total' => 'DECIMAL(15,5) NOT NULL',
             'payment_currency' => 'VARCHAR(3) NOT NULL',
             'kevin_status' => 'VARCHAR(15)',

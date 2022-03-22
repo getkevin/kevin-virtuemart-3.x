@@ -7,7 +7,10 @@ use TablePaymentmethods;
 use VirtueMartCart;
 use vmPSPlugin;
 
-defined('_JEXEC') or exit('Restricted access');
+if (!\defined('_JEXEC')) {
+    exit('Restricted access');
+}
+
 if (!class_exists('vmPSPlugin')) {
     require JPATH_VM_PLUGINS.DS.'vmpsplugin.php';
 }

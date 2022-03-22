@@ -50,7 +50,9 @@
 
 
 <?php
-defined('_JEXEC') or exit();
+if (!defined('_JEXEC')) {
+    exit();
+}
 
 /**
  * Bank selection list in checkout template.
@@ -91,7 +93,7 @@ foreach ($viewData['banks'] as $bank) {
 if ($viewData['banks'] && $viewData['isCardEnabled']) {
     $checked = 'card' === $viewData['selectedBankId'] ? "checked='checked'" : '';
 
-    $cardImageUri = dirname(__FILE__).'/../kevin/images/credit_card_stock.png';
+    $cardImageUri = __DIR__.'/../kevin/images/credit_card_stock.png';
     $image = 'data:image/png;base64,'.base64_encode(file_get_contents($cardImageUri));
 
     $html .= "<input type='radio' name='bank' id='card' class='input-hidden' value='card' $checked onclick='updateBankId(this)'/>";
