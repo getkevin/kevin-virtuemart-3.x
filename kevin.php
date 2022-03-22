@@ -236,7 +236,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $status = $request->getString('statusGroup', 0);
 
         $virtueMartOrderModel = new VirtueMartModelOrders();
-        $orderId = intval($virtueMartOrderModel->getOrderIdByOrderPass($orderNumber, $orderPass));
+        $orderId = (int) ($virtueMartOrderModel->getOrderIdByOrderPass($orderNumber, $orderPass));
 
         $kevinPaymentStatus = $this->getKevinPaymentStatus($orderId, $this->_tablename);
 

@@ -1,6 +1,8 @@
 <?php
 
-defined('_JEXEC') or exit();
+if (!defined('_JEXEC')) {
+    exit();
+}
 
 /**
  * Post payment screen template.

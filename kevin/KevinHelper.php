@@ -79,12 +79,12 @@ trait KevinHelper
     {
         $db = JFactory::getDBO();
 
-        if (!count($countryCodes)) {
+        if (!\count($countryCodes)) {
             return [];
         }
 
         $where = "WHERE `country_2_code` = '$countryCodes[0]'";
-        for ($i = 1; $i < count($countryCodes); ++$i) {
+        for ($i = 1; $i < \count($countryCodes); ++$i) {
             $where .= " OR `country_2_code` = '$countryCodes[$i]'";
         }
 
@@ -174,7 +174,7 @@ trait KevinHelper
      */
     public function generateExceptionMessage(Exception $e)
     {
-        return get_class($e).': '.$e->getMessage();
+        return \get_class($e).': '.$e->getMessage();
     }
 
     /**
