@@ -66,7 +66,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $paymentMethod = $this->getVmPluginMethod($paymentMethodId);
 
         if (!$isSelected || !(bool) $paymentMethod->list_banks_in_checkout) {
-            $this->unsetKevinSession(); //reset session to prevent issues when the setting is flicked
+            $this->unsetKevinSession(); // reset session to prevent issues when the setting is flicked
 
             return $this->displayListFE($cart, $selected, $htmlIn);
         }

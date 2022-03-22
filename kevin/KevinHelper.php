@@ -51,16 +51,16 @@ trait KevinHelper
     {
         switch ($type) {
             case self::ALERT_SUCCESS:
-                $color = '#23C552'; //green
+                $color = '#23C552'; // green
                 break;
             case self::ALERT_ERROR:
-                $color = '#F84F31'; //red
+                $color = '#F84F31'; // red
                 break;
             case self::ALERT_INFO:
-                $color = '#FAAD15'; //orange
+                $color = '#FAAD15'; // orange
                 break;
             default:
-                $color = '#9A9A9A'; //grey
+                $color = '#9A9A9A'; // grey
         }
 
         return "<h4 style='padding: 10px; background-color: $color; color: white; margin-bottom: 15px;'>$message</h4>";
