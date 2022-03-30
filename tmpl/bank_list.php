@@ -91,7 +91,7 @@ foreach ($viewData['banks'] as $bank) {
 }
 
 if ($viewData['banks'] && $viewData['isCardEnabled']) {
-    $checked = 'card' === $viewData['selectedBankId'] ? "checked='checked'" : '';
+    $checked = $viewData['selectedBankId'] === 'card' ? "checked='checked'" : '';
 
     $cardImageUri = __DIR__.'/../kevin/images/credit_card_stock.png';
     $image = 'data:image/png;base64,'.base64_encode(file_get_contents($cardImageUri));
