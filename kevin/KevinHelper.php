@@ -34,7 +34,7 @@ trait KevinHelper
 
         $activePaymentMethodsCount = $db->setQuery($q)->loadResult();
 
-        return 1 === (int) $activePaymentMethodsCount;
+        return (int) $activePaymentMethodsCount === 1;
     }
 
     /**

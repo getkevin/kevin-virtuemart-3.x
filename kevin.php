@@ -118,7 +118,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $creditorIban = $this->sanitize($paymentMethod->company_bank_account);
         $isRedirectPreferred = (bool) $paymentMethod->redirect_preferred;
         $isListBanksInCheckout = (bool) $paymentMethod->list_banks_in_checkout;
-        $isCardPayment = 'card' === $this->getKevinSession()->selectedBankId;
+        $isCardPayment = $this->getKevinSession()->selectedBankId === 'card';
         $bankId = $this->getKevinSession()->selectedBankId;
 
         if ($isListBanksInCheckout && !$this->validateUserInput()) {
@@ -417,7 +417,7 @@ class plgVmPaymentKevin extends vmPSPluginBase implements KevinInterface
         $order = $orderModel->getOrder($orderId);
 
         // prevent successful order from being changed to failed by an expired payment
-        if ('C' === $order['details']['BT']->order_status) {
+        if ($order['details']['BT']->order_status === 'C') {
             http_response_code(200);
 
             return;
