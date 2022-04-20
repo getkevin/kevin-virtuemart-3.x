@@ -77,6 +77,9 @@ trait KevinHelper
      */
     public function getCountryNamesBy2Codes($countryCodes)
     {
+        // Explicitly load country names translations. Required for some languages to work.
+        JFactory::getLanguage()->load('com_virtuemart_countries', JPATH_SITE.'/administrator');
+
         $db = JFactory::getDBO();
 
         if (!\count($countryCodes)) {
