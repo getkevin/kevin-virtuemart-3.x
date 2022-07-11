@@ -93,7 +93,7 @@ foreach ($viewData['banks'] as $bank) {
 if ($viewData['banks'] && $viewData['isCardEnabled']) {
     $checked = $viewData['selectedBankId'] === 'card' ? "checked='checked'" : '';
 
-    $cardImageUri = __DIR__.'/../kevin/images/credit_card_stock.png';
+    $cardImageUri = 'https://cdn.kevin.eu/banks/images/VISA_MC.png';
     $image = 'data:image/png;base64,'.base64_encode(file_get_contents($cardImageUri));
 
     $html .= "<input type='radio' name='bank' id='card' class='input-hidden' value='card' $checked onclick='updateBankId(this)'/>";
